@@ -1,0 +1,47 @@
+services:
+  sv-backend-chat:
+    image: 'sv-backend-chat'
+    build:
+      context: .
+      dockerfile: Dockerfile-development
+    # restart: always
+    networks:
+      - app-network
+    labels:
+      # - 'traefik.frontend.rule=HostRegexp:{catchall:.*};PathPrefixStrip:/sv-backend-chat'
+      # - 'traefik.http.routers.api.rule=PathPrefix(`/sv-backend-chat`)'
+      - 'traefik.http.routers.api.service=api@internal'
+      - 'traefik.http.routers.api.middlewares=auth'
+      - 'traefik.http.services.api.loadbalancer.server.port=3000' # port ของ Backend
+    volumes:
+      - '$PWD:/app'
+    environment:
+      - NODE_ENV=localhost
+      - APP_REGION=th
+    command: npm run start:dev
+
+    # เพิ่มบริการของ Traefik
+  traefik:
+    image: traefik
+    container_name: traefik
+    command:
+      - '--api'
+      - '--file'
+      - '--docker' # ใช้การตั้งค่าจาก Docker
+    ports:
+      - '80:80' # การเชื่อมต่อ HTTP
+      - '8080:8080' # Dashboard ของ Traefik
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock' # เชื่อมโยง socket ของ Docker
+    networks:
+      - app-network # ใช้ network เดียวกับบริการอื่นๆ
+    labels:
+      # คอมเมนต์หรือลบออกในส่วนนี้
+      # - 'traefik.http.middlewares.auth.basicauth.users=user:$(htpasswd -nb user password)'
+      - 'traefik.http.routers.api.service=api@internal'
+      - 'traefik.http.routers.api.middlewares=auth'
+      - 'traefik.http.services.api.loadbalancer.server.port=3000'
+
+networks:
+  app-network:
+    external: true

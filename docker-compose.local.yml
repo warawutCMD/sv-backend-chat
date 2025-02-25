@@ -1,0 +1,52 @@
+services:
+  sv-backend-chat:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - db-sql # คือการบอกว่าต้องรอให้ db-sql สร้างเสร็จก่อน
+      - db-mongo # คือการบอกว่าต้องรอให้ db-mongo สร้างเสร็จก่อน
+    networks:
+      - app-network
+
+  db-sql:
+    container_name: chit_chat_db
+    image: mysql:latest
+    restart: always
+    # command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=+07:00
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1234
+      - MYSQL_DATABASE=chat_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin1234
+    volumes:
+      - ./scripts/create-database.sql:/docker-entrypoint-initdb.d/create-database.sql
+      - db-sql:/var/lib/mysql
+    networks:
+      - app-network
+
+  db-mongo:
+    image: mongo:7.0.5
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root1234
+    volumes:
+      - db-mongo:/data/db
+    networks:
+      - app-network
+
+volumes:
+  db-sql:
+    driver: local
+  db-mongo:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge # คือการบอกว่าเราจะใช้ bridge network ในการเชื่อมต่อระหว่าง container ทั้งหมด
