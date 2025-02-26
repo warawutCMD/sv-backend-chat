@@ -166,6 +166,16 @@ USE chat_db;
 
 # Migration
 
+** ต้องเปลี่ยน .env สำหรับ migration **
+``` bash
+DB_HOST=127.0.0.1 # สำหรับ migration
+```
+
+** ต้องเปลี่ยน .env สำหรับ run บน docker **
+``` bash
+DB_HOST=127.0.0.1 # สำหรับ run บน docker
+```
+
 ## สร้าง Migration
 ``` bash
 npm run migration:create
