@@ -9,9 +9,11 @@ services:
       - app-network
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.api.rule=PathPrefix(`/sv-backend-chat`)' # การเชื่อมต่อ URL
-      - 'traefik.http.routers.api.entrypoints=web' # การเชื่อมต่อ Entry Points
-      - 'traefik.http.services.api.loadbalancer.server.port=3000' # port ของ Backend
+      - 'traefik.http.routers.api.rule=PathPrefix(`/sv-backend-chat`)'
+      - 'traefik.http.routers.api.entrypoints=web'
+      - 'traefik.http.routers.api.middlewares=strip-prefix' # เพิ่ม middleware
+      - 'traefik.http.middlewares.strip-prefix.stripprefix.prefixes=/sv-backend-chat' # กำหนด prefix ที่จะตัด
+      - 'traefik.http.services.api.loadbalancer.server.port=3000'
     volumes:
       - '$PWD:/app'
     environment:
@@ -21,7 +23,7 @@ services:
 
     # เพิ่มบริการของ Traefik
   traefik:
-    image: traefik:v3.3
+    image: traefik:v2.11
     container_name: traefik
     command:
       - '--log.level=DEBUG'
