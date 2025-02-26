@@ -21,24 +21,6 @@ services:
       - APP_REGION=th
     command: npm run start:dev
 
-    # เพิ่มบริการของ Traefik
-  traefik:
-    image: traefik:v2.11
-    container_name: traefik
-    command:
-      - '--log.level=DEBUG'
-      - '--api.insecure=true'
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-      - '--entryPoints.web.address=:80'
-    ports:
-      - '80:80' # การเชื่อมต่อ HTTP
-      - '8080:8080' # Dashboard ของ Traefik
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock' # เชื่อมโยง socket ของ Docker
-    networks:
-      - app-network # ใช้ network เดียวกับบริการอื่นๆ
-
 networks:
   app-network:
     external: true

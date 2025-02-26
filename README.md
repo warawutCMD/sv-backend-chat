@@ -98,3 +98,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 # sv-backend-chat
+
+## Rur Docker local
+containers ในโหมด detached โดยใช้การตั้งค่าจากไฟล์ docker-compose.yml และ docker-compose.local.yml ซึ่งไฟล์ทั้งสองจะถูกรวมกันในการตั้งค่าของ containers ที่จะเริ่มต้นขึ้น
+```bash
+$ docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
+```
+## หยุด containers
+```bash
+$ docker-compose down
+```
