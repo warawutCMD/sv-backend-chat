@@ -2,37 +2,27 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from './config/config.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { ConfigModule } from './config.module';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { ChatGateway } from './modules/sockets/chat/chat.gateway';
 // import { SocketIoModule } from 'ngx-socket-io';
+import { AuthModule } from './modules/auth/auth.module';
+import { OrmModule } from './orm.module';
+import mikroOrmConfig from './configuration/mikro-orm.config';
+import { mongooseConfig } from './configuration/mongoose.config';
 
 @Module({
   imports: [
     ConfigModule, // Import ConfigModule
 
     // SQL Database (MySQL)
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const dbConfig = configService.get('database.mysql');
-        // console.log('DB CONFIG:', dbConfig); // 👈 เช็คค่าที่โหลดมา
-        return dbConfig;
-      },
-    }),
+    MikroOrmModule.forRoot(mikroOrmConfig), // MikroORM config
 
     // MongoDB
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('database.mongo.uri'),
-      }),
-    }),
+    MongooseModule.forRoot(mongooseConfig.uri), // ใช้ค่า uri จาก mongooseConfig
 
     // WebSockets
     // SocketIoModule.forRoot({
@@ -43,6 +33,8 @@ import { ChatGateway } from './modules/sockets/chat/chat.gateway';
 
     UsersModule,
     MessagesModule,
+    AuthModule,
+    OrmModule,
   ],
   controllers: [AppController],
   providers: [AppService, ChatGateway],

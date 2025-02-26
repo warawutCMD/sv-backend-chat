@@ -1,16 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { getLocalNowAsDate } from 'src/common/helper/time.helper';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryKey()
+  id!: number;
 
-  @Column()
-  username: string;
+  @Property()
+  name!: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Property()
+  email!: string;
 
-  @Column()
-  password: string;
+  @Property({ hidden: true })
+  password!: string;
+
+  @Property({ onCreate: () => getLocalNowAsDate() })
+  createdAt: Date;
+
+  @Property({ onUpdate: () => getLocalNowAsDate() })
+  updatedAt: Date = getLocalNowAsDate();
 }

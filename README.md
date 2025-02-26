@@ -108,3 +108,43 @@ $ docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
 ```bash
 $ docker-compose down
 ```
+
+## รีสตาร์ท Docker Compose
+``` bash
+docker-compose -f docker-compose.local.yml down
+docker-compose -f docker-compose.local.yml up
+```
+
+## ตรวจสอบการเชื่อมต่อจากภายนอก
+``` bash
+docker exec -it chit_chat_db mysql -u admin -p
+```
+
+## สอบการตั้งค่า Docker Network
+``` bash
+docker network inspect app-network
+```
+
+## เข้า MySQL container
+``` bash
+docker exec -it chit_chat_db bash
+```
+
+### เข้า MySQL service
+``` bash
+mysql -u admin -p
+```
+ใส่รหัสผ่าน admin1234 ดูว่าเข้าสู่ MySQL ได้หรือไม่
+
+### ตรวจสอบผู้ใช้และสิทธิ์
+
+#### ตรวจสอบสิทธิ์ของผู้ใช้ admin
+``` bash
+SHOW GRANTS FOR 'admin'@'%';
+```
+admin มีสิทธิ์ที่เพียงพอในการเข้าถึงฐานข้อมูล chat_db หรือไม่
+
+## ตรวจสอบการเชื่อมต่อจากภายนอก
+``` bash
+docker exec -it chit_chat_db mysql -u admin -p
+```

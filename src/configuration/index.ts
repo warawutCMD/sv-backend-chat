@@ -9,21 +9,24 @@ export default () => ({
     secret: process.env.JWT_SECRET,
   },
   databaseSQL: {
-    type: process.env.DB_TYPE,
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10) || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    dbName: process.env.DB_NAME,
+    dbName: process.env.DB_NAME || 'chatdb',
     debug: process.env.NODE_ENV !== 'production',
     replicas: [
       {
-        type: process.env.DB_TYPE_READ,
         host: process.env.DB_HOST_READ,
         user: process.env.DB_USER_READ,
         password: process.env.DB_PASS_READ,
         dbName: process.env.DB_NAME_READ,
       },
     ],
+  },
+  databaseMongo: {
+    uri:
+      process.env.MONGO_URI ||
+      'mongodb://root:root1234@db-mongo:27017/chatdb?authSource=admin',
   },
 });
