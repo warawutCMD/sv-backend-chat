@@ -6,7 +6,7 @@ import configuration from 'src/configuration'; // โหลด configuration จ
   imports: [
     NestConfigModule.forRoot({
       load: [configuration], // โหลด database config
-      isGlobal: true, // ทำให้สามารถใช้ config ได้ทุก module
+      // isGlobal: true, // ทำให้สามารถใช้ config ได้ทุก module
     }),
   ],
   exports: [NestConfigModule],

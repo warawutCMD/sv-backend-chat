@@ -10,13 +10,16 @@ export class User {
   name!: string;
 
   @Property()
+  username!: string;
+
+  @Property()
   email!: string;
 
   @Property({ hidden: true })
   password!: string;
 
   @Property({ onCreate: () => getLocalNowAsDate() })
-  createdAt: Date;
+  createdAt: Date = getLocalNowAsDate();
 
   @Property({ onUpdate: () => getLocalNowAsDate() })
   updatedAt: Date = getLocalNowAsDate();

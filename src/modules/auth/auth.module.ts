@@ -6,6 +6,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config/dist';
 import { OrmModule } from '@/orm.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -13,11 +14,13 @@ import { OrmModule } from '@/orm.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('jwt.secret'),
+        signOptions: { expiresIn: '1h' },
       }),
       inject: [ConfigService],
     }),
     OrmModule,
     ConfigModule,
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, LocalStrategy],

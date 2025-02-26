@@ -45,7 +45,8 @@ const descriptionFileName = (timestamp: string) => {
   return `${counter.toString().padStart(4, '0')}-${name}-${timestamp}`;
 };
 
-console.log('config databaseSQL : ', config().databaseSQL);
+// log ค่า config ที่ได้จากไฟล์ .env
+// console.log('config databaseSQL : ', config().databaseSQL);
 
 export default {
   ...config().databaseSQL,

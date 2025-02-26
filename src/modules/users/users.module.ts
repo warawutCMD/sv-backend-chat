@@ -7,5 +7,6 @@ import { OrmModule } from 'src/orm.module';
   imports: [OrmModule],
   providers: [UsersService],
   controllers: [UsersController],
+  exports: [UsersService],
 })
 export class UsersModule {}

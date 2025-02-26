@@ -9,10 +9,11 @@ async function bootstrap() {
   app.useWebSocketAdapter(new IoAdapter(app));
 
   const config = new DocumentBuilder()
-    .setTitle('Microservice API')
-    .setDescription('Microservice API Description')
-    .setVersion('0.1')
+    .setTitle('Chat API')
+    .setDescription('API Documentation for Chat Application')
+    .setVersion('1.0')
     .addBearerAuth()
+    .addServer('/sv-backend-chat') // เพิ่ม server base path
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
