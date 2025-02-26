@@ -1,11 +1,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import config from './index';
+import config from '../configuration'; // หรือ path ที่ถูกต้อง
 import readlineSync from 'readline-sync';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { Options } from '@mikro-orm/core';
 import { MySqlDriver } from '@mikro-orm/mysql';
+import * as dotenv from 'dotenv';
+dotenv.config(); // โหลดไฟล์ .env ใน root ของโปรเจค
 
 const migrationsPath = path.join(__dirname, '../migrations');
 const seedersPath = path.join(__dirname, '../seeders');

@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from './config.module';
-import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { ChatGateway } from './modules/sockets/chat/chat.gateway';
