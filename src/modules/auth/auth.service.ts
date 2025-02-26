@@ -48,7 +48,7 @@ export class AuthService {
   async login(loginDto: LoginRequestDto): Promise<{ accessToken: string }> {
     const { email, password } = loginDto;
     const user = await this.userRepository.findOne({ email });
-    console.log('user: ', user);
+    console.info('user: ', user);
 
     if (!user) throw new Error('Invalid credentials');
 
