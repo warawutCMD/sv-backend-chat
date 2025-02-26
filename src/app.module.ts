@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { ChatGateway } from './modules/sockets/chat/chat.gateway';
-import { SocketIoModule } from 'ngx-socket-io';
+// import { SocketIoModule } from 'ngx-socket-io';
 
 @Module({
   imports: [

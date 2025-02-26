@@ -8,10 +8,9 @@ services:
     networks:
       - app-network
     labels:
-      # - 'traefik.frontend.rule=HostRegexp:{catchall:.*};PathPrefixStrip:/sv-backend-chat'
-      # - 'traefik.http.routers.api.rule=PathPrefix(`/sv-backend-chat`)'
-      - 'traefik.http.routers.api.service=api@internal'
-      - 'traefik.http.routers.api.middlewares=auth'
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.api.rule=PathPrefix(`/sv-backend-chat`)' # การเชื่อมต่อ URL
+      - 'traefik.http.routers.api.entrypoints=web' # การเชื่อมต่อ Entry Points
       - 'traefik.http.services.api.loadbalancer.server.port=3000' # port ของ Backend
     volumes:
       - '$PWD:/app'
@@ -22,12 +21,14 @@ services:
 
     # เพิ่มบริการของ Traefik
   traefik:
-    image: traefik
+    image: traefik:v3.3
     container_name: traefik
     command:
-      - '--api'
-      - '--file'
-      - '--docker' # ใช้การตั้งค่าจาก Docker
+      - '--log.level=DEBUG'
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entryPoints.web.address=:80'
     ports:
       - '80:80' # การเชื่อมต่อ HTTP
       - '8080:8080' # Dashboard ของ Traefik
@@ -35,12 +36,6 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock' # เชื่อมโยง socket ของ Docker
     networks:
       - app-network # ใช้ network เดียวกับบริการอื่นๆ
-    labels:
-      # คอมเมนต์หรือลบออกในส่วนนี้
-      # - 'traefik.http.middlewares.auth.basicauth.users=user:$(htpasswd -nb user password)'
-      - 'traefik.http.routers.api.service=api@internal'
-      - 'traefik.http.routers.api.middlewares=auth'
-      - 'traefik.http.services.api.loadbalancer.server.port=3000'
 
 networks:
   app-network:
